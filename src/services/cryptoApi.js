@@ -14,7 +14,7 @@ export const cryptoApi = createApi({
     baseQuery: fetchBaseQuery({ baseUrl:baseUrl }),
     endpoints: (builder) => ({
         getCryptos: builder.query({
-            query: () => createRequest('/coins')
+            query: (count) => createRequest(`/coins?limit=${count}`),
         })
     })
 });
@@ -22,19 +22,3 @@ export const cryptoApi = createApi({
 export const {
     useGetCryptosQuery,
 } = cryptoApi;
-
-// var axios = require("axios").default;
-
-// var options = {
-//   method: 'GET',
-//   url: 'https://coinranking1.p.rapidapi.com/stats',
-//   headers: {
-
-//   }
-// };
-
-// axios.request(options).then(function (response) {
-// 	console.log(response.data);
-// }).catch(function (error) {
-// 	console.error(error);
-// });
