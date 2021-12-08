@@ -1,42 +1,46 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react';
+import {Select, Typography, Row, Col, Avatar, Card} from 'antd';
+import moment from 'moment';
+import {useGetCryptoNewsQuery} from '../services/cryptoNewsApi';
 
-const News = () => {
+const {Title, Text} = Typography;
+const {Option} = Select;
+
+const News = ({ simplified }) => {
  
-    // const count = simplified ? 10 : 100;
-    // const { data:newsList , isFetching } = useGetCryptosQuery(count);
-    // const [news,setNews] = useState(cryptosList?.data?.coins);
+    const count = simplified ? 6 : 12;
+    const { data:cryptoNews} = useGetCryptoNewsQuery( { newsCategory:'Cryptocurrency',count:count}  );
+    const [newsList,setNews] = useState(cryptoNews?.value);
 
-    
-    // if (isFetching) {
-    //     return "Loading..."
-    // }
+    if (!cryptoNews.value) {
+         return "Loading..."
+    }
 
     return (
-        <>
-            <p>News</p>
+        <Row gutter={[24,24]}>
+            {renderCardForEachNews(newsList)}
             {/* <Row gutter={[32,32]} className="crypto-card-container">
                 { renderCardForEachCurrency(cryptos) }
             </Row> */}
-        </>
+        </Row>
     )
 }
 
-// const renderCardForEachCurrency = (cryptosList) => {
-//     return cryptosList?.map( (currency) =>(
-//         <Col xs={24} sm={12} lg={6} className="crypto-card" key={currency.id}>
-//             <Link to={`/crypto/${currency.id}`} key={currency.id} >
-//                 <Card title={`${currency.rank}.${currency.name}`} 
-//                       extra={ <img className="crypto-image" src={currency.iconUrl} /> } 
-//                       hoverable 
-//                 >
-//                     <p> Preço: US$ {millify(currency.price)} </p>
-//                     <p> Capital de mercado: {millify(currency.marketCap)} </p>
-//                     <p> Mudança diária: {millify(currency.change)} % </p>
-//                 </Card>
-//             </Link>
-//         </Col>
-//     ))
-// }
+const renderCardForEachNews = (newsList) => {
+     return newsList?.map( (news,arrayIndex) =>(
+         <Col xs={24} sm={12} lg={8} key={arrayIndex}>
+             
+            <Card hoverable className="news-card">
+                <a href={news.url} target="_blank" rel="noreferrer">
+                    <div className="news-image-container">
+                        <Title className="news-title" level={4}>{news.name}</Title>
+                    </div>
+                </a>
+            </Card>
+
+        </Col>
+    ))
+}
 
 
 export default News
