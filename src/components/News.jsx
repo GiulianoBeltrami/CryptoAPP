@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Select, Typography, Row, Col, Avatar, Card} from 'antd';
 import moment from 'moment';
 import {useGetCryptoNewsQuery} from '../services/cryptoNewsApi';
+import {useGetCryptosQuery} from '../services/cryptoApi';
 
 const {Title, Text} = Typography;
 const {Option} = Select;
@@ -9,11 +10,11 @@ const {Option} = Select;
 const News = ({ simplified }) => {
  
     const count = simplified ? 6 : 12;
-    const { data:cryptoNews } = useGetCryptoNewsQuery( { newsCategory:'Cryptocurrency',count:count}  );
-    const [newsList,setNews] = useState(cryptoNews?.value);
-    const [searchTerm,setSearchTerm] = useState("");
+    const { data:cryptosList } = useGetCryptosQuery(100);
+    const [newsCategory,setNewsCategory] = useState("Cryptocurrency");
+    const { data:cryptoNews } = useGetCryptoNewsQuery( { newsCategory:newsCategory,count:count}  );
 
-    if (!newsList) {
+    if (!cryptoNews?.value) {
         return "Loading..."
     }
 
@@ -26,15 +27,16 @@ const News = ({ simplified }) => {
                         className="select-news"
                         placeholder="Selecione uma criptomoeda"
                         optionFilterProp="children"
-                        onChange={(event) => setSearchTerm(event.target.value)}
+                        onChange={(value) => setNewsCategory(value)}
                         filterOption={(input,option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 }
                     >
-
+                        <Option value="Cryptocurrency" >Criptomoedas</Option>
+                        {cryptosList?.data?.coins.map((currency) => <Option value={currency.name}>{currency.name}</Option>)}
                     </Select>
                 </Col>
 
             )}
-            { renderCardForEachNews(newsList) }
+            { renderCardForEachNews(cryptoNews?.value) }
         </Row>
     )
 }
@@ -42,6 +44,7 @@ const News = ({ simplified }) => {
 const renderCardForEachNews = (newsList) => {
 
     const demoImage = 'https://www.bing.com/th?id=OVFT.mpzuVZnv8dwIMRfQGPbOPC&pid=News';
+
 
     return newsList?.map( (news,arrayIndex) =>(
         <Col xs={24} sm={12} lg={8} key={arrayIndex}>
