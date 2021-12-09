@@ -19,11 +19,12 @@ const CryptoDetails = () => {
     const { data:coinHistory } = useGetCryptoHistoryQuery({coinId,timePeriod});
     const cryptoDetails = data?.data?.coin;
 
+    
     if(isFetching) {
         return 'Loading...'
     }
 
-    const time = ['3h', '24h', '7d', '30d','3m' , '1y',  '3y', '5y'];
+    const time = ['3h', '24h', '7d', '30d', '1y', '3m', '3y', '5y'];
 
     const stats = [
         { title: 'Preço para USD', value: `US$ ${cryptoDetails.price && millify(cryptoDetails.price)}`, icon: <DollarCircleOutlined /> },
@@ -43,6 +44,7 @@ const CryptoDetails = () => {
 
     return (
         <Col className="coin-detail-container">
+
             <Col className="coin-heading-container">
                 <Title level={2} className="coin-name">
                     {cryptoDetails.name} ({cryptoDetails.slug})
@@ -52,12 +54,12 @@ const CryptoDetails = () => {
                     Veja estatísticas de valor, capitalização de mercado e suprimeto.
                 </p>
             </Col>
+
             <Select defaultValue="7d"
                     className="select-timeperiod"
                     placeholder="Selecione o periodo"
-                    onChange={ (value) => setTimePeriod(value) } 
-            >
-                {time.map((date) => <Option key={date} value={date}></Option>)}
+                    onChange={ (value) => setTimePeriod(value) }>
+                {time.map((date) => <Option key={date}>{date}</Option>)}
             </Select>
 
             <LineChart coinHistory={coinHistory} currentPrice={millify(cryptoDetails.price)} coinName={cryptoDetails.name} />
