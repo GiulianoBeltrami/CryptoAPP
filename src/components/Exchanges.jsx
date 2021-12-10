@@ -1,6 +1,6 @@
 import React from 'react';
 import millify from 'millify';
-import { Table, Collapse, Row, Col, Typography, Avatar } from 'antd';
+import { Table, Collapse, Row, Col, Typography, Avatar, Space} from 'antd';
 import HTMLReactParser from 'html-react-parser';
 
 import { useGetCryptoExchangesQuery } from '../services/cryptoApi';
@@ -8,6 +8,7 @@ import Loader from './Loader';
 
 const { Text } = Typography;
 const { Panel } = Collapse;
+const { Column, ColumnGroup } = Table;
 
 const Exchanges = () => {
   const { data, isFetching } = useGetCryptoExchangesQuery();
@@ -15,79 +16,34 @@ const Exchanges = () => {
 
   if (isFetching) return <Loader />;
 
-  const columns = [
-    {
-      title: 'Exchanges',
-      dataIndex: 'exchanges',
-      key: 'exchanges',
-    },
-    {
-      title: 'Volume de negociação em 24h',
-      dataIndex: 'volume',
-      key: 'volume',
-    },
-    {
-      title: 'Mercados',
-      dataIndex: 'numberOfMarkets',
-      key: 'numberOfMarkets',
-    },
-    {
-      title: 'Participação de mercado',
-      dataIndex: 'marketShare',
-      key: 'marketShare',
-    },
-  ];
-  
-  // const exchangeObject = []
-  // exchangesList.forEach(element => {
-  //   exchangeObject.push({
-  //     exchanges:
-  //   })
-  // })
-
-  const dataSource = [
-
-  ]
-
+  const dataSource = exchangesList.map((exchange) => ({
+      key: exchange.rank,
+      exchanges: 
+      (
+        <>
+          <Text><strong>{exchange.rank}.</strong></Text>
+          <Avatar className="exchange-image" src={exchange.iconUrl} />
+          <Text><strong>{exchange.name}</strong></Text>
+        </>
+      ),
+      volume: (<>US${millify(exchange.volume)}</>),
+      numberOfMarkets: millify(exchange.numberOfMarkets),
+      marketShare: (<>{millify(exchange.marketShare)}%</>),
+      description:HTMLReactParser(exchange.description || '')
+  }));
 
   return (
     <>
-      <Row padding={0} margin={0}>
-        <Col span={6}>Exchanges</Col>
-        <Col span={6}>24h Trade Volume</Col>
-        <Col span={6}>Markets</Col>
-        <Col span={6}>Change</Col>
-      </Row>
-      
-      
-
-      
-      <Table>
-      {exchangesList.map((exchange) => (
-        
-          <Col span={24}>
-            <Collapse>
-              <Panel
-                key={exchange.id}
-                showArrow={false}
-                header={(
-                  <Row key={exchange.id}>
-                    <Col span={6}>
-                      <Text><strong>{exchange.rank}.</strong></Text>
-                      <Avatar className="exchange-image" src={exchange.iconUrl} />
-                      <Text><strong>{exchange.name}</strong></Text>
-                    </Col>
-                    <Col span={6}>${millify(exchange.volume)}</Col>
-                    <Col span={6}>{millify(exchange.numberOfMarkets)}</Col>
-                    <Col span={6}>{millify(exchange.marketShare)}%</Col>
-                  </Row>
-                  )}
-              >
-                {HTMLReactParser(exchange.description || '')}
-              </Panel>
-            </Collapse>
-          </Col>
-        ))}
+      <Table pagination={false}
+             expandRowByClick={true}
+             dataSource={dataSource}
+             expandable={{
+              expandedRowRender: record => (<p style={{ margin: 0 }}>{record.description}</p>)
+            }}>
+        <Column title="Exchanges" dataIndex="exchanges" key="exchanges" />
+        <Column title="Volume de negociação em 24h" dataIndex="volume" key="volume" />
+        <Column title="Numero de mercado" dataIndex="numberOfMarkets" key="numberOfMarkets" />
+        <Column title="Participação de mercado" dataIndex="marketShare" key="marketShare" />
       </Table>
     </>
   );
