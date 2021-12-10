@@ -1,5 +1,5 @@
+import { Spin } from 'antd';
 import React from 'react';
-import {Spin} from 'antd';
 
 const Loader = () => {
     return (
@@ -9,4 +9,4 @@ const Loader = () => {
     )
 }
 
-export default Loader
+export default Loader;
