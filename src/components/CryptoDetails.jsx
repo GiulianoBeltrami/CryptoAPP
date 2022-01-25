@@ -31,7 +31,7 @@ const CryptoDetails = () => {
 
             <Col className="coin-heading-container">
                 <Title level={2} className="coin-name">
-                    {cryptoDetails.name} ({cryptoDetails.slug})
+                    {cryptoDetails.name}
                 </Title>
                 <p>
                     {cryptoDetails.name} preço em US dólares.
@@ -44,7 +44,7 @@ const CryptoDetails = () => {
                 placeholder="Selecione o periodo"
                 onChange={(value) => setTimePeriod(value)}>
                 {time.map((date) => <Option key={date}>{date}</Option>)}
-            </Select>
+            </Select> 
 
             <LineChart coinHistory={coinHistory} currentPrice={millify(cryptoDetails.price)} coinName={cryptoDetails.name} />
 
@@ -103,8 +103,8 @@ const renderGenericStatsInformations = (cryptoDetails) => {
         { title: 'Número de Mercados', value: cryptoDetails.numberOfMarkets, icon: <FundOutlined /> },
         { title: 'Número de Exchanges', value: cryptoDetails.numberOfExchanges, icon: <MoneyCollectOutlined /> },
         { title: 'Suprimento Aprovado', value: cryptoDetails.approvedSupply ? <CheckOutlined /> : <StopOutlined />, icon: <ExclamationCircleOutlined /> },
-        { title: 'Suprimento Total', value: `US$ ${millify(cryptoDetails.totalSupply)}`, icon: <ExclamationCircleOutlined /> },
-        { title: 'Suprimento Circulante', value: `US$ ${millify(cryptoDetails.circulatingSupply)}`, icon: <ExclamationCircleOutlined /> },
+        { title: 'Suprimento Total', value: `US$ ${millify(cryptoDetails.supply.total)}`, icon: <ExclamationCircleOutlined /> },
+        { title: 'Suprimento Circulante', value: `US$ ${millify(cryptoDetails.supply.circulating)}`, icon: <ExclamationCircleOutlined /> },
     ];
 
     return (

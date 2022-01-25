@@ -24,6 +24,7 @@ const Cryptocurrencies = ({ simplified }) => {
         return <Loader />
     }
 
+
     return (
         <>
             {!simplified && (
@@ -41,8 +42,8 @@ const Cryptocurrencies = ({ simplified }) => {
 
 const renderCardForEachCurrency = (cryptosList) => {
     return cryptosList?.map((currency) => (
-        <Col xs={24} sm={12} lg={6} className="crypto-card" key={currency.id}>
-            <Link to={`/crypto/${currency.id}`} key={currency.id} >
+        <Col xs={24} sm={12} lg={6} className="crypto-card" key={currency.uuid}>
+            <Link to={`/crypto/${currency.uuid}`} key={currency.uuid} >
                 <Card title={`${currency.rank}.${currency.name}`}
                     extra={<img className="crypto-image" src={currency.iconUrl} />}
                     hoverable

@@ -19,6 +19,8 @@ const Homepage = () => {
         return <Loader />
     }
 
+    console.log(data);
+
     return (
         <>
             <Title level={2} className="heading"> Status global das criptomoedas</Title>

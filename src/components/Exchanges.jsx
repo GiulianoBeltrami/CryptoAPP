@@ -10,10 +10,12 @@ const { Column } = Table;
 
 const Exchanges = () => {
   const { data, isFetching } = useGetCryptoExchangesQuery();
-  const exchangesList = data?.data?.exchanges;
+  const exchangesList = data?.exchanges;
 
   if (isFetching) return <Loader />;
 
+  console.log(data);
+  
   return (
     <>
       <Table pagination={false}
@@ -21,11 +23,13 @@ const Exchanges = () => {
         dataSource={exchangesTableRow(exchangesList)}
         expandable={{
           expandedRowRender: exchange => (<p style={{ margin: 0 }}>{exchange.description}</p>)
-        }}>
+        }}
+        scroll={{ x: true }}
+        >
         <Column title="Exchanges" dataIndex="exchanges" key="exchanges" />
         <Column title="Volume de negociação em 24h" dataIndex="volume" key="volume" />
-        <Column title="Numero de mercado" dataIndex="numberOfMarkets" key="numberOfMarkets" />
-        <Column title="Participação de mercado" dataIndex="marketShare" key="marketShare" />
+        <Column title="Numero de mercado" dataIndex="numberOfMarkets" key="numberOfMarkets"  />
+        <Column title="Participação de mercado" dataIndex="marketShare" key="marketShare"  />
       </Table>
     </>
   );
@@ -46,7 +50,7 @@ const exchangesTableRow = (exchangeList) => {
       volume: (<>US${millify(exchange.volume)}</>),
       numberOfMarkets: millify(exchange.numberOfMarkets),
       marketShare: (<>{millify(exchange.marketShare)}%</>),
-      description: HTMLReactParser(exchange.description || '')
+      description: HTMLReactParser(exchange.description || ''),
     }
   )));
 }
