@@ -70,7 +70,7 @@ const renderMainStatsInformations = (cryptoDetails) => {
     const stats = [
         { title: 'Preço para USD', value: `US$ ${cryptoDetails.price && millify(cryptoDetails.price)}`, icon: <DollarCircleOutlined /> },
         { title: 'Ranking', value: cryptoDetails.rank, icon: <NumberOutlined /> },
-        { title: 'Volume de 24h', value: `US$ ${cryptoDetails.volume && millify(cryptoDetails.volume)}`, icon: <ThunderboltOutlined /> },
+        { title: 'Volume de 24h', value: `US$ ${cryptoDetails["24hVolume"] && millify(cryptoDetails["24hVolume"])}`, icon: <ThunderboltOutlined /> },
         { title: 'Capitalização de Mercado', value: `US$ ${cryptoDetails.marketCap && millify(cryptoDetails.marketCap)}`, icon: <DollarCircleOutlined /> },
         { title: 'Maior-valor-de-todos(daily avg.)', value: `US$ ${millify(cryptoDetails.allTimeHigh.price)}`, icon: <TrophyOutlined /> },
     ];
